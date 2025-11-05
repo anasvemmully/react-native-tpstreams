@@ -24,6 +24,9 @@ export interface NativeProps extends ViewProps {
   offlineLicenseExpireTime?: Double;
   showDefaultCaptions?: boolean;
   downloadMetadata?: string;
+  enableNotification?: boolean;
+  disableCaption?: boolean;
+  metadata?: string;
 
   // Event props for receiving data from native methods
   onCurrentPosition?: DirectEventHandler<{ position: Double }>;
@@ -63,6 +66,14 @@ interface TPStreamsPlayerViewCommands {
     viewRef: React.ElementRef<HostComponent<NativeProps>>,
     newToken: string
   ) => void;
+  setTitle: (
+    viewRef: React.ElementRef<HostComponent<NativeProps>>,
+    title: string
+  ) => void;
+  setArtist: (
+    viewRef: React.ElementRef<HostComponent<NativeProps>>,
+    artist: string
+  ) => void;
 }
 
 export const Commands = codegenNativeCommands<TPStreamsPlayerViewCommands>({
@@ -76,6 +87,8 @@ export const Commands = codegenNativeCommands<TPStreamsPlayerViewCommands>({
     'isPlaying',
     'getPlaybackSpeed',
     'setNewAccessToken',
+    'setTitle',
+    'setArtist',
   ],
 });
 

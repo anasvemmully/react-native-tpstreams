@@ -159,6 +159,9 @@ export default function App() {
               videoId="4P3nJXp2xFT"
               accessToken="cde2c1a6-434d-4fd1-99f4-9e2024bf2576"
               style={styles.player}
+              enableNotification={true}
+              metadata={{ title: 'title', artist: 'hooman' }}
+              disableCaption={true}
               onPlayerStateChanged={handlePlayerStateChanged}
               onIsPlayingChanged={handleIsPlayingChanged}
               onPlaybackSpeedChanged={handlePlaybackSpeedChanged}

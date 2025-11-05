@@ -107,6 +107,21 @@ class TPStreamsRNPlayerViewManager : SimpleViewManager<TPStreamsRNPlayerView>(),
     view.setDownloadMetadata(metadataMap)
   }
 
+  @ReactProp(name = "enableNotification")
+  override fun setEnableNotification(view: TPStreamsRNPlayerView, enabled: Boolean) {
+    view.setEnableNotification(enabled)
+  }
+
+  @ReactProp(name = "disableCaption")
+  override fun setDisableCaption(view: TPStreamsRNPlayerView, disabled: Boolean) {
+    view.setDisableCaption(disabled)
+  }
+
+  @ReactProp(name = "metadata")
+  override fun setMetadata(view: TPStreamsRNPlayerView, metadata: String?) {
+    view.setMetadata(metadata)
+  }
+
   // Command implementations
   override fun play(view: TPStreamsRNPlayerView) {
     view.play()
@@ -143,7 +158,15 @@ class TPStreamsRNPlayerViewManager : SimpleViewManager<TPStreamsRNPlayerView>(),
   override fun setNewAccessToken(view: TPStreamsRNPlayerView, newToken: String) {
     view.setNewAccessToken(newToken)
   }
-  
+
+  override fun setTitle(view: TPStreamsRNPlayerView, title: String) {
+    view.setTitle(title)
+  }
+
+  override fun setArtist(view: TPStreamsRNPlayerView, artist: String) {
+    view.setArtist(artist)
+  }
+
   override fun onAfterUpdateTransaction(view: TPStreamsRNPlayerView) {
     super.onAfterUpdateTransaction(view)
     view.tryCreatePlayer()

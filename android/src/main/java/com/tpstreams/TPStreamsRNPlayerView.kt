@@ -33,6 +33,10 @@ class TPStreamsRNPlayerView(context: ThemedReactContext) : FrameLayout(context) 
     private var downloadMetadata: Map<String, Any>? = null
     private var offlineLicenseExpireTime: Long = DEFAULT_OFFLINE_LICENSE_EXPIRE_TIME
     private var accessTokenCallback: ((String) -> Unit)? = null
+    private var enableBackgroundPlayback: Boolean = false
+    private var disableCaption: Boolean = false
+    private var customTitle: String? = null
+    private var customArtist: String? = null
 
     init {
         addView(playerView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
@@ -94,7 +98,31 @@ class TPStreamsRNPlayerView(context: ThemedReactContext) : FrameLayout(context) 
     fun setOfflineLicenseExpireTime(expireTime: Long?) {
         this.offlineLicenseExpireTime = expireTime ?: DEFAULT_OFFLINE_LICENSE_EXPIRE_TIME
     }
-    
+
+    fun setEnableNotification(enabled: Boolean) {
+        this.enableBackgroundPlayback = enabled
+    }
+
+    fun setDisableCaption(disabled: Boolean) {
+        this.disableCaption = disabled
+    }
+
+    fun setMetadata(metadataJson: String?) {
+        if (metadataJson.isNullOrEmpty()) {
+            this.customTitle = null
+            this.customArtist = null
+            return
+        }
+
+        try {
+            val metadata = JsonUtils.parseJsonObject(metadataJson)
+            this.customTitle = metadata["title"] as? String
+            this.customArtist = metadata["artist"] as? String
+        } catch (e: Exception) {
+            Log.w("TPStreamsRN", "Error parsing metadata JSON", e)
+        }
+    }
+
     fun setNewAccessToken(newToken: String) {
         Log.d("TPStreamsRNPlayerView", "Setting new access token")
         accessTokenCallback?.let { callback ->
@@ -109,15 +137,19 @@ class TPStreamsRNPlayerView(context: ThemedReactContext) : FrameLayout(context) 
 
         try {
             player = TPStreamsPlayer.create(
-                context, 
-                videoId!!, 
-                accessToken!!, 
-                shouldAutoPlay, 
+                context,
+                videoId!!,
+                accessToken!!,
+                shouldAutoPlay,
                 startAt,
-                enableDownload, 
+                enableDownload,
                 showDefaultCaptions,
                 downloadMetadata?.mapValues { it.value.toString() },
-                offlineLicenseExpireTime
+                offlineLicenseExpireTime,
+                enableBackgroundPlayback,
+                disableCaption,
+                customTitle,
+                customArtist
             )
             
             player?.listener = object : TPStreamsPlayer.Listener {
@@ -225,6 +257,14 @@ class TPStreamsRNPlayerView(context: ThemedReactContext) : FrameLayout(context) 
         val speed = player?.playbackParameters?.speed ?: 1.0f
         emitEvent("onPlaybackSpeed", mapOf("speed" to speed.toDouble()))
         return speed
+    }
+
+    fun setTitle(title: String) {
+        player?.setTitle(title)
+    }
+
+    fun setArtist(artist: String) {
+        player?.setArtist(artist)
     }
 
     override fun onDetachedFromWindow() {

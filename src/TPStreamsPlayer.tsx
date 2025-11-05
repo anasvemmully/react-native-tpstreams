@@ -29,6 +29,8 @@ export interface TPStreamsPlayerRef {
   getDuration: () => Promise<number>;
   isPlaying: () => Promise<boolean>;
   getPlaybackSpeed: () => Promise<number>;
+  setTitle: (title: string) => void;
+  setArtist: (artist: string) => void;
 }
 
 // Prop types for the player component
@@ -41,6 +43,9 @@ export interface TPStreamsPlayerProps extends ViewProps {
   offlineLicenseExpireTime?: number;
   showDefaultCaptions?: boolean;
   downloadMetadata?: { [key: string]: any };
+  enableNotification?: boolean;
+  disableCaption?: boolean;
+  metadata?: { title?: string; artist?: string };
   onPlayerStateChanged?: (state: number) => void;
   onIsPlayingChanged?: (isPlaying: boolean) => void;
   onPlaybackSpeedChanged?: (speed: number) => void;
@@ -73,6 +78,9 @@ const TPStreamsPlayerView = forwardRef<
     offlineLicenseExpireTime,
     showDefaultCaptions,
     downloadMetadata,
+    enableNotification,
+    disableCaption,
+    metadata,
     style,
     onPlayerStateChanged,
     onIsPlayingChanged,
@@ -230,6 +238,10 @@ const TPStreamsPlayerView = forwardRef<
         Commands.getPlaybackSpeed,
         'playbackSpeed'
       ),
+      setTitle: (title: string) =>
+        nativeRef.current && Commands.setTitle(nativeRef.current, title),
+      setArtist: (artist: string) =>
+        nativeRef.current && Commands.setArtist(nativeRef.current, artist),
     }),
     [createPromiseMethod]
   );
@@ -247,6 +259,9 @@ const TPStreamsPlayerView = forwardRef<
       ? JSON.stringify(downloadMetadata)
       : undefined,
     offlineLicenseExpireTime,
+    enableNotification,
+    disableCaption,
+    metadata: metadata ? JSON.stringify(metadata) : undefined,
     style,
     onCurrentPosition,
     onDuration,

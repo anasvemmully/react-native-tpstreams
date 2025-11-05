@@ -26,6 +26,11 @@ object JsonUtils {
         return result
     }
 
+    fun parseJsonObject(jsonString: String): Map<String, Any> {
+        val json = JSONObject(jsonString)
+        return jsonToMap(json)
+    }
+
     private fun jsonToMap(json: JSONObject): Map<String, Any> {
         val map = mutableMapOf<String, Any>()
         val keys = json.keys()
