@@ -4,3 +4,25 @@ extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autoli
 rootProject.name = 'tpstreams.example'
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
+
+// ==============================================================================
+// Local TPStreamsAndroidPlayer Configuration (For Development)
+// ==============================================================================
+// This enables using the local TPStreamsAndroidPlayer source code instead of
+// the remote dependency from JitPack. Benefits:
+//   - Immediate feedback when making changes to the SDK
+//   - No need to publish/push for testing
+//   - Faster development iteration
+//
+// To DISABLE local development:
+//   - Comment out or remove the includeBuild block below
+//
+// Local SDK path: /Users/chef/Desktop/work/TPStreamsAndroidPlayer
+// ==============================================================================
+
+// includeBuild('/Users/chef/Desktop/work/TPStreamsAndroidPlayer') {
+//     dependencySubstitution {
+//         substitute(module('com.github.anasvemmully:TPStreamsAndroidPlayer'))
+//             .using(project(':tpstreams-android-player'))
+//     }
+// }

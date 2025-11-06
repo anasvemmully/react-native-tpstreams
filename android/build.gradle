@@ -83,10 +83,42 @@ dependencies {
   implementation "com.facebook.react:react-android"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-
+  // ==============================================================================
+  // TPStreamsAndroidPlayer Dependency Configuration
+  // ==============================================================================
+  //
+  // PRODUCTION BUILD (Remote Dependency):
+  //   Uses: JitPack repository - fetches from GitHub
+  //   Config: Line below (keep as-is for production)
+  //
+  implementation "com.github.anasvemmully:TPStreamsAndroidPlayer:feat~play-in-background-SNAPSHOT"
+  //
+  // LOCAL DEVELOPMENT (Local Project):
+  //   For faster development without publishing changes
+  //   Local path: /Users/chef/Desktop/work/TPStreamsAndroidPlayer
+  //
+  //   To enable local development:
+  //   1. Ensure composite build is configured in settings.gradle:
+  //
+  //      includeBuild('/Users/chef/Desktop/work/TPStreamsAndroidPlayer') {
+  //          dependencySubstitution {
+  //              substitute(module('com.github.anasvemmully:TPStreamsAndroidPlayer'))
+  //                  .using(project(':tpstreams-android-player'))
+  //          }
+  //      }
+  //
+  //   2. This configuration is already present in:
+  //      example/android/settings.gradle
+  //
+  //   3. Gradle will automatically use the local version instead of remote
+  //      No changes needed to this file!
+  //
+  //   To disable local development:
+  //   - Simply remove the includeBuild section from settings.gradle
+  //
+  // ==============================================================================
 
   //  implementation "com.github.testpress:TPStreamsAndroidPlayer:${getExtOrDefault('tpstreamsAndroidPlayerVersion')}"
-  implementation "com.github.anasvemmully:TPStreamsAndroidPlayer:feat~play-in-background-SNAPSHOT"
 }
 
 react {
